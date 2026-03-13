@@ -93,7 +93,17 @@
             ></textarea>
 
             <div class="row row--between">
-              <div class="statusline" id="ocrStatus">OCR：未开始</div>
+              <div class="ocr-status">
+                <div class="statusline" id="ocrStatus">OCR：未开始</div>
+                <button
+                  class="btn btn--small btn--ghost"
+                  id="btnRemoveImage"
+                  type="button"
+                  hidden
+                >
+                  删除图片
+                </button>
+              </div>
               <button class="btn btn--primary" id="btnStartTutoring" type="button" disabled>
                 开始辅导
               </button>

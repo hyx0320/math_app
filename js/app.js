@@ -111,7 +111,7 @@
     }, duration);
   }
 
-  /** @type {{users:any[], problems:any[], currentUser:any|null, currentProblem:any|null, stepIndex:number, answerStepIndex:number, sessionActive:boolean, logs:any[], ggb:any, chart:any, initialDrawingApplied:boolean}} */
+  /** @type {{users:any[], problems:any[], currentUser:any|null, currentProblem:any|null, stepIndex:number, answerStepIndex:number, sessionActive:boolean, logs:any[], ggb:any, chart:any, initialDrawingApplied:boolean, uploadedImageName:string}} */
   const state = {
     users: [],
     problems: [],
@@ -121,6 +121,7 @@
     answerStepIndex: 0,
     sessionActive: false,
     logs: [],
+    uploadedImageName: "",
     initialDrawingApplied: false,
     ggb: {
       available: false,
@@ -520,6 +521,25 @@
     } else {
       setChip("chipOCR", "OCR：—");
     }
+  }
+
+  function removeUploadedImage() {
+    const preview = $("uploadPreview");
+    const fileInput = $("fileInput");
+    const btnRemoveImage = $("btnRemoveImage");
+
+    if (preview) {
+      preview.removeAttribute("src");
+      preview.style.display = "none";
+    }
+    if (fileInput) fileInput.value = "";
+    if (btnRemoveImage) btnRemoveImage.hidden = true;
+
+    state.uploadedImageName = "";
+    const ta = $("ocrText");
+    setOcrText(safeString(ta?.value), { from: "manual" });
+    addLog("OCR_UPLOAD_REMOVED", {}, true);
+    toast("已删除上传图片");
   }
 
   function clearChatAndWhiteboard() {
@@ -1040,6 +1060,13 @@
       });
     }
 
+    const btnRemoveImage = $("btnRemoveImage");
+    if (btnRemoveImage) {
+      btnRemoveImage.addEventListener("click", () => {
+        removeUploadedImage();
+      });
+    }
+
     const btnStart = $("btnStartTutoring");
     if (btnStart) btnStart.addEventListener("click", () => startSession());
 
@@ -1181,8 +1208,11 @@
   function handleFile(file) {
     const preview = $("uploadPreview");
     const status = $("ocrStatus");
+    const btnRemoveImage = $("btnRemoveImage");
     if (status) status.textContent = `OCR：已上传（${file.name}）`;
+    if (btnRemoveImage) btnRemoveImage.hidden = false;
     setChip("chipOCR", "OCR：已上传");
+    state.uploadedImageName = safeString(file.name);
     addLog("OCR_UPLOAD", { name: file.name, size: file.size, type: file.type }, true);
 
     try {

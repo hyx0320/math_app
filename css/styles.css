@@ -455,6 +455,13 @@ body.demo-mode {
   font-weight: 800;
 }
 
+.ocr-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
 .chat {
   padding: 12px;
   flex: 1;
