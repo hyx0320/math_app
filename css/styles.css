@@ -351,9 +351,15 @@ body.demo-mode {
   flex: 5;
 }
 
+.card--problem {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
 .card--whiteboard {
-  flex: 0 0 420px;
-  height: 420px;
+  flex: 0 0 560px;
+  height: 560px;
   overflow: hidden;
 }
 
@@ -461,6 +467,11 @@ body.demo-mode {
 
 @media (max-height: 860px) {
   .card--chat {
+    flex-basis: 400px;
+    height: 400px;
+  }
+
+  .card--whiteboard {
     flex-basis: 400px;
     height: 400px;
   }

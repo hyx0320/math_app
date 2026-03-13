@@ -111,13 +111,14 @@
     }, duration);
   }
 
-  /** @type {{users:any[], problems:any[], currentUser:any|null, currentProblem:any|null, stepIndex:number, sessionActive:boolean, logs:any[], ggb:any, chart:any, initialDrawingApplied:boolean}} */
+  /** @type {{users:any[], problems:any[], currentUser:any|null, currentProblem:any|null, stepIndex:number, answerStepIndex:number, sessionActive:boolean, logs:any[], ggb:any, chart:any, initialDrawingApplied:boolean}} */
   const state = {
     users: [],
     problems: [],
     currentUser: null,
     currentProblem: null,
     stepIndex: 0,
+    answerStepIndex: 0,
     sessionActive: false,
     logs: [],
     initialDrawingApplied: false,
@@ -436,6 +437,7 @@
     const p =
       state.problems.find((x) => x.problem_id === problemId) || state.problems[0] || null;
     state.currentProblem = p;
+    state.answerStepIndex = 0;
     renderProblemHeader(p);
     updateStepper();
     renderComparePanel();
@@ -525,6 +527,13 @@
     const wb = $("whiteboard");
     if (chat) chat.innerHTML = "";
     if (wb) wb.innerHTML = "";
+    state.answerStepIndex = 0;
+  }
+
+  function clearWhiteboardOnly() {
+    const wb = $("whiteboard");
+    if (wb) wb.innerHTML = "";
+    state.answerStepIndex = 0;
   }
 
   /**
@@ -600,6 +609,39 @@
     pre.textContent = state.ggb.allCommands.join("\n");
   }
 
+  function revealOneAnswerStep() {
+    if (!state.sessionActive) startSession();
+    if (!state.sessionActive) return;
+
+    const p = state.currentProblem;
+    const total = p?.steps?.length ?? 0;
+    if (!p || total === 0) {
+      toast("当前题目暂无分步答案");
+      return;
+    }
+
+    if (state.answerStepIndex >= total) {
+      toast("答案已全部显示");
+      return;
+    }
+
+    const stepObj = p.steps[state.answerStepIndex];
+    const variant = currentVariant();
+    const wbLine = stepObj?.whiteboard?.[variant] || stepObj?.whiteboard?.basic || "";
+
+    if (wbLine) appendWhiteboard(wbLine);
+
+    const commands =
+      state.answerStepIndex === 0 && state.initialDrawingApplied
+        ? []
+        : Array.isArray(stepObj?.drawing_commands)
+          ? stepObj.drawing_commands
+          : [];
+    applyDrawingCommands(commands);
+
+    state.answerStepIndex += 1;
+  }
+
   /** @param {string[]} commands */
   function applyDrawingCommands(commands) {
     const list = Array.isArray(commands) ? commands.filter(Boolean) : [];
@@ -673,6 +715,7 @@
     }
     state.sessionActive = true;
     state.stepIndex = 0;
+    state.answerStepIndex = 0;
     state.initialDrawingApplied = false;
     clearChatAndWhiteboard();
     resetDrawing();
@@ -750,19 +793,16 @@
       citations
     });
 
-    // 2) 白板
-    if (wbLine) appendWhiteboard(wbLine);
-
-    // 3) RAG（演示）
+    // 2) RAG（演示）
     if (citations.length > 0) {
       setChip("chipRAG", `检索：${citations.length} 引用`);
       addLog("RAG_CITATIONS", { count: citations.length }, true);
     }
 
-    // 4) 画图
+    // 3) 画图
     applyDrawingCommands(commands);
 
-    // 5) 画像更新（演示：每一步微幅提升对应维度）
+    // 4) 画像更新（演示：每一步微幅提升对应维度）
     const topics = Array.isArray(p.topics) ? p.topics : [];
     const dim = topics.includes("平面几何")
       ? "平面几何"
@@ -1026,6 +1066,21 @@
     bindHint("btnHintL2", "L2");
     bindHint("btnHintL3", "L3");
     bindHint("btnStuck", "L0");
+
+    const btnShowAnswer = $("btnShowAnswer");
+    if (btnShowAnswer) {
+      btnShowAnswer.addEventListener("click", () => {
+        revealOneAnswerStep();
+      });
+    }
+
+    const btnClearWhiteboard = $("btnClearWhiteboard");
+    if (btnClearWhiteboard) {
+      btnClearWhiteboard.addEventListener("click", () => {
+        clearWhiteboardOnly();
+        toast("已清空答案区");
+      });
+    }
 
     const btnResetDrawing = $("btnResetDrawing");
     if (btnResetDrawing) btnResetDrawing.addEventListener("click", () => resetDrawing());
