@@ -31,6 +31,10 @@ body {
     Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 .link {
   appearance: none;
   border: none;
@@ -51,17 +55,19 @@ body.demo-mode {
 
 .app {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .topbar {
-  height: 64px;
+  min-height: 64px;
   background: var(--card);
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 0 16px;
+  padding: 10px 16px;
 }
 
 .brand {
@@ -261,18 +267,24 @@ body.demo-mode {
 }
 
 .layout {
-  height: calc(100vh - 64px);
+  flex: 1;
+  min-height: calc(100vh - 64px);
   display: grid;
   grid-template-columns: 360px 1fr 360px;
   gap: var(--gap);
   padding: 16px;
+  align-items: start;
 }
 
 .panel {
-  min-height: 0;
+  min-height: auto;
   display: flex;
   flex-direction: column;
   gap: var(--gap);
+}
+
+.panel--center {
+  align-self: stretch;
 }
 
 .card {
@@ -310,11 +322,12 @@ body.demo-mode {
 }
 
 .card--ggb {
-  flex: 6;
+  flex: 5;
 }
 
 .card--whiteboard {
-  flex: 5;
+  flex: 6;
+  min-height: 320px;
 }
 
 .upload {
