@@ -277,7 +277,7 @@ body.demo-mode {
   flex: 1;
   min-height: calc(100vh - 64px);
   display: grid;
-  grid-template-columns: 320px minmax(0, 1fr);
+  grid-template-columns: 400px minmax(0, 1fr);
   gap: var(--gap);
   padding: 18px;
   margin-top: 64px;
@@ -343,7 +343,7 @@ body.demo-mode {
 
 .card.card--chat {
   flex: 0 0 560px;
-  height: 560x;
+  height: 560px;
   overflow: hidden;
 }
 
@@ -352,8 +352,9 @@ body.demo-mode {
 }
 
 .card--whiteboard {
-  flex: 6;
-  min-height: 320px;
+  flex: 0 0 420px;
+  height: 420px;
+  overflow: hidden;
 }
 
 .upload {
@@ -702,13 +703,14 @@ body.demo-mode .bubble__content {
   flex: 1;
   min-height: 0;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: stretch;
   gap: 12px;
 }
 
 .ggb-container {
   position: relative;
-  flex: 1;
+  flex: 1 1 auto;
   min-height: 240px;
   border-radius: 14px;
   border: 1px solid var(--border);
@@ -752,7 +754,9 @@ body.demo-mode .bubble__content {
   overflow: hidden;
   background: #0b1220;
   color: #e2e8f0;
-  height:360px;
+  flex: 0 0 360px;
+  max-width: 48%;
+  height: auto;
   min-height: 0;
   display: flex;
   flex-direction: column;
@@ -1108,6 +1112,17 @@ body.demo-mode .bubble__content {
 
 @media (max-width: 1280px) {
   .layout {
-    grid-template-columns: 320px minmax(0, 1fr);
+    grid-template-columns: 360px minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 980px) {
+  .ggb-wrap {
+    flex-direction: column;
+  }
+
+  .commands {
+    flex-basis: 320px;
+    max-width: none;
   }
 }

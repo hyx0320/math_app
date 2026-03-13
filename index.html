@@ -60,62 +60,6 @@
       <main class="layout">
         <!-- Center Panel -->
         <section class="panel panel--center" aria-label="黑板区">
-          <div class="card card--ggb">
-            <div class="card__header">
-              <div class="card__title">动态画板（GeoGebra）</div>
-              <div class="card__actions">
-                <button class="btn btn--small btn--ghost" id="btnResetDrawing" type="button">重置</button>
-                <button class="btn btn--small btn--ghost" id="btnShowCommands" type="button">命令</button>
-              </div>
-            </div>
-
-            <div class="ggb-wrap">
-              <div id="ggb-container" class="ggb-container">
-                <div
-                  id="ggbAppletTarget"
-                  class="ggb-applet-target"
-                  aria-label="GeoGebra 容器"
-                ></div>
-
-                <div class="placeholder" id="ggbPlaceholder">
-                  <div class="placeholder__title">GeoGebra 正在加载…</div>
-                  <div class="placeholder__desc">
-                    若离线或 CDN 不可用，将自动降级为“命令列表演示”。
-                  </div>
-                </div>
-              </div>
-
-              <div class="commands" id="commandsPanel" hidden>
-                <div class="commands__header">
-                  <div>本题画图命令（演示用）</div>
-                  <button class="btn btn--small" id="btnCopyCommands" type="button">复制命令</button>
-                </div>
-                <pre class="commands__body" id="commandsBody"></pre>
-              </div>
-            </div>
-          </div>
-
-          <div class="card card--whiteboard">
-            <div class="card__header">
-              <button class="btn btn--small" id="btnShowAnswer" type="button">显示答案</button>
-              <div class="card__actions">
-                <button class="btn btn--small btn--ghost" id="btnCopyWhiteboard" type="button">复制</button>
-              </div>
-            </div>
-            <div class="whiteboard" id="whiteboard" aria-label="白板区"></div>
-
-            <div class="compare" id="comparePanel" hidden>
-              <div class="compare__header">
-                <div class="compare__title">对比：通用大模型“直出答案”（仅用于对比展示）</div>
-                <div class="compare__hint">注意：本系统主输出仍为分步提示。</div>
-              </div>
-              <div class="compare__body" id="compareBody"></div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Left Panel -->
-        <section class="panel panel--left" aria-label="交互区">
           <div class="card card--problem">
             <div class="card__header">
               <div class="card__title">题目输入 & OCR</div>
@@ -153,6 +97,62 @@
               <button class="btn btn--primary" id="btnStartTutoring" type="button" disabled>
                 开始辅导
               </button>
+            </div>
+          </div>
+
+          <div class="card card--whiteboard">
+            <div class="card__header">
+              <button class="btn btn--small" id="btnShowAnswer" type="button">显示答案</button>
+              <div class="card__actions">
+                <button class="btn btn--small btn--ghost" id="btnCopyWhiteboard" type="button">复制</button>
+              </div>
+            </div>
+            <div class="whiteboard" id="whiteboard" aria-label="白板区"></div>
+
+            <div class="compare" id="comparePanel" hidden>
+              <div class="compare__header">
+                <div class="compare__title">对比：通用大模型“直出答案”（仅用于对比展示）</div>
+                <div class="compare__hint">注意：本系统主输出仍为分步提示。</div>
+              </div>
+              <div class="compare__body" id="compareBody"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Left Panel -->
+        <section class="panel panel--left" aria-label="交互区">
+          <div class="card card--ggb">
+            <div class="card__header">
+              <div class="card__title">动态画板（GeoGebra）</div>
+              <div class="card__actions">
+                <button class="btn btn--small btn--ghost" id="btnResetDrawing" type="button">重置</button>
+                <button class="btn btn--small btn--ghost" id="btnShowCommands" type="button">命令</button>
+              </div>
+            </div>
+
+            <div class="ggb-wrap">
+              <div id="ggb-container" class="ggb-container">
+                <div
+                  id="ggbAppletTarget"
+                  class="ggb-applet-target"
+                  aria-label="GeoGebra 容器"
+                ></div>
+
+                <div class="placeholder" id="ggbPlaceholder">
+                  <div class="placeholder__title">GeoGebra 正在加载…</div>
+                  <div class="placeholder__desc">
+                    若离线或 CDN 不可用，将自动降级为“命令列表演示”。
+                  </div>
+                </div>
+              </div>
+
+              <div class="commands" id="commandsPanel" hidden>
+                <div class="commands__header">
+                  <div>本题画图命令（演示用）</div>
+                  <button class="btn btn--small" id="btnCopyCommands" type="button">复制命令</button>
+                </div>
+                <pre class="commands__body" id="commandsBody"></pre>
+              </div>
             </div>
           </div>
 
