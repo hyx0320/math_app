@@ -60,6 +60,11 @@ body.demo-mode {
 }
 
 .topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
   min-height: 64px;
   background: var(--card);
   border-bottom: 1px solid var(--border);
@@ -272,10 +277,21 @@ body.demo-mode {
   flex: 1;
   min-height: calc(100vh - 64px);
   display: grid;
-  grid-template-columns: 320px minmax(0, 1fr) 320px;
+  grid-template-columns: 320px minmax(0, 1fr);
   gap: var(--gap);
   padding: 18px;
+  margin-top: 64px;
   align-items: start;
+}
+
+.layout--user {
+  grid-template-columns: minmax(320px, 760px);
+  justify-content: center;
+}
+
+.panel--user {
+  min-height: 0;
+  overflow: auto;
 }
 
 .panel {
@@ -1093,8 +1109,5 @@ body.demo-mode .bubble__content {
 @media (max-width: 1280px) {
   .layout {
     grid-template-columns: 320px minmax(0, 1fr);
-  }
-  .panel--right {
-    display: none;
   }
 }

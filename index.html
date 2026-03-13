@@ -30,7 +30,7 @@
 
         <div class="topbar__actions">
           <label class="field field--select">
-            <span class="field__label">用户</span>
+            <a class="btn btn--small btn--ghost" href="./user.html">用户详情</a>
             <select id="userSelect" aria-label="选择用户"></select>
           </label>
 
@@ -227,41 +227,6 @@
           </div>
         </section>
 
-        <!-- Right Panel -->
-        <section class="panel panel--right" aria-label="诊断区">
-          <div class="card card--profile">
-            <div class="card__header">
-              <div class="card__title">用户画像</div>
-              <div class="card__actions"><span class="badge" id="profileLevelBadge">—</span></div>
-            </div>
-            <div class="profile" id="profileCard"></div>
-          </div>
-
-          <div class="card card--radar">
-            <div class="card__header">
-              <div class="card__title">能力雷达图（动态）</div>
-              <div class="card__actions"><span class="delta" id="radarDelta" hidden></span></div>
-            </div>
-            <div class="radar-wrap" id="radarWrap">
-              <canvas id="radar" width="360" height="240"></canvas>
-              <div class="radar-fallback" id="radarFallback" hidden></div>
-            </div>
-          </div>
-
-          <div class="card card--tags">
-            <div class="card__header">
-              <div class="card__title">诊断标签</div>
-            </div>
-            <div class="tags" id="tags"></div>
-          </div>
-
-          <div class="card card--history">
-            <div class="card__header">
-              <div class="card__title">历史薄弱点追踪</div>
-            </div>
-            <div class="history" id="history"></div>
-          </div>
-        </section>
       </main>
     </div>
 

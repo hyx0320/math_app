@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>用户详情 · 数竞智脑</title>
+    <link rel="stylesheet" href="./css/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
+    />
+  </head>
+  <body>
+    <div class="app" id="app">
+      <header class="topbar">
+        <div class="brand" title="数竞智脑 · 用户详情">
+          <div class="brand__logo" aria-hidden="true">数</div>
+          <div class="brand__text">
+            <div class="brand__name">用户详情</div>
+            <div class="brand__subtitle">画像 · 雷达 · 标签 · 历史薄弱点</div>
+          </div>
+        </div>
+
+        <div class="topbar__center">
+          <div class="problem-title">用户画像详情页</div>
+          <div class="problem-meta">与主页面数据实时一致（Demo）</div>
+        </div>
+
+        <div class="topbar__actions">
+          <label class="field field--select">
+            <span class="field__label">用户</span>
+            <select id="userSelect" aria-label="选择用户"></select>
+          </label>
+          <a class="btn btn--small btn--ghost" href="./index.html">返回主页</a>
+        </div>
+      </header>
+
+      <main class="layout layout--user">
+        <section class="panel panel--user" aria-label="用户详情区">
+          <div class="card card--profile">
+            <div class="card__header">
+              <div class="card__title">用户画像</div>
+              <div class="card__actions"><span class="badge" id="profileLevelBadge">—</span></div>
+            </div>
+            <div class="profile" id="profileCard"></div>
+          </div>
+
+          <div class="card card--radar">
+            <div class="card__header">
+              <div class="card__title">能力雷达图（动态）</div>
+              <div class="card__actions"><span class="delta" id="radarDelta" hidden></span></div>
+            </div>
+            <div class="radar-wrap" id="radarWrap">
+              <canvas id="radar" width="360" height="240"></canvas>
+              <div class="radar-fallback" id="radarFallback" hidden></div>
+            </div>
+          </div>
+
+          <div class="card card--tags">
+            <div class="card__header">
+              <div class="card__title">诊断标签</div>
+            </div>
+            <div class="tags" id="tags"></div>
+          </div>
+
+          <div class="card card--history">
+            <div class="card__header">
+              <div class="card__title">历史薄弱点追踪</div>
+            </div>
+            <div class="history" id="history"></div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script defer src="https://www.geogebra.org/apps/deployggb.js"></script>
+    <script defer src="./js/app.js"></script>
+  </body>
+</html>
