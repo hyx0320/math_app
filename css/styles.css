@@ -325,9 +325,9 @@ body.demo-mode {
   gap: 8px;
 }
 
-.card--chat {
-  flex: 0 0 460px;
-  height: 460px;
+.card.card--chat {
+  flex: 0 0 560px;
+  height: 560x;
   overflow: hidden;
 }
 
@@ -546,9 +546,77 @@ body.demo-mode .bubble__content {
 .attempt {
   padding: 12px;
   border-top: 1px solid var(--border);
-  display: grid;
-  grid-template-columns: 1fr auto;
+  display: flex;
+  flex-direction: column;
   gap: 10px;
+}
+
+.attempt .textarea {
+  margin: 0;
+  width: 100%;
+}
+
+.attempt__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.attempt__left,
+.attempt__right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.attempt__divider {
+  width: 1px;
+  height: 20px;
+  background: var(--border);
+}
+
+.icon-btn {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: #f8fafc;
+  color: var(--text);
+  border-radius: 12px;
+  padding: 8px 12px;
+  font-weight: 900;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.08s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+
+.icon-btn:hover {
+  background: #edf2f7;
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.08);
+}
+
+.icon-btn:active {
+  transform: translateY(1px);
+}
+
+.icon-btn__icon {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.icon-btn__text {
+  font-size: 13px;
+}
+
+.icon-btn--primary {
+  background: var(--primary);
+  border-color: transparent;
+  color: #fff;
+}
+
+.icon-btn--primary:hover {
+  background: #245b97;
 }
 
 .tool-status {

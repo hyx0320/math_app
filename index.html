@@ -160,6 +160,11 @@
             <div class="card__header">
               <div class="card__title">启发式对话（分步输出）</div>
               <div class="card__actions">
+                <div class="stepper" id="stepper">Step 0/0</div>
+                <button class="btn btn--small" id="btnHintL0" type="button">获取思路提示 (L0)</button>
+                <button class="btn btn--small" id="btnHintL1" type="button">查看相关定理 (L1)</button>
+                <button class="btn btn--small" id="btnHintL2" type="button">下一步计算 (L2)</button>
+                <button class="btn btn--small" id="btnHintL3" type="button">更细一点 (L3)</button>
                 <button class="btn btn--small btn--ghost" id="btnClearChat" type="button">
                   清空
                 </button>
@@ -171,12 +176,46 @@
               <textarea
                 class="textarea textarea--compact"
                 id="attemptText"
-                rows="2"
+                rows="5"
                 placeholder="我的尝试/我算到这一步（用于纠错演示）…"
               ></textarea>
-              <button class="btn btn--primary" id="btnSubmitAttempt" type="button">
-                提交我的思路
-              </button>
+              <div class="attempt__footer">
+                <div class="attempt__left">
+                  <button
+                    class="icon-btn"
+                    id="btnUploadImage"
+                    type="button"
+                    title="上传图像"
+                    aria-label="上传图像"
+                  >
+                    <span class="icon-btn__icon" aria-hidden="true">🖼️</span>
+                    <span class="icon-btn__text">上传</span>
+                  </button>
+                </div>
+                <div class="attempt__right">
+                  <button
+                    class="icon-btn"
+                    id="btnVoiceInput"
+                    type="button"
+                    title="语音输入"
+                    aria-label="语音输入"
+                  >
+                    <span class="icon-btn__icon" aria-hidden="true">🎤</span>
+                    <span class="icon-btn__text">语音</span>
+                  </button>
+                  <span class="attempt__divider" aria-hidden="true"></span>
+                  <button
+                    class="icon-btn icon-btn--primary"
+                    id="btnSubmitAttempt"
+                    type="button"
+                    title="发送"
+                    aria-label="发送"
+                  >
+                    <span class="icon-btn__icon" aria-hidden="true">➤</span>
+                    <span class="icon-btn__text">发送</span>
+                  </button>
+                </div>
+              </div>
             </div>
 
             <div class="tool-status" id="toolStatus" aria-label="工具状态条">
@@ -184,28 +223,6 @@
               <span class="chip" id="chipRAG">检索：—</span>
               <span class="chip" id="chipDraw">画图：—</span>
               <span class="chip" id="chipProfile">画像：—</span>
-              <button class="chip chip--action" id="btnVoiceInput" type="button">语音输入</button>
-              <button class="chip chip--action" id="btnUploadImage" type="button">上传图像</button>
-            </div>
-          </div>
-
-          <div class="card card--controls">
-            <div class="card__header">
-              <div class="card__title">提示控制台</div>
-              <div class="card__actions">
-                <div class="stepper" id="stepper">Step 0/0</div>
-              </div>
-            </div>
-
-            <div class="control-grid" aria-label="提示按钮">
-              <button class="btn btn--primary" id="btnHintL0" type="button">获取思路提示 (L0)</button>
-              <button class="btn" id="btnHintL1" type="button">查看相关定理 (L1)</button>
-              <button class="btn" id="btnHintL2" type="button">下一步计算 (L2)</button>
-              <button class="btn" id="btnHintL3" type="button">更细一点 (L3)</button>
-            </div>
-
-            <div class="helper" id="hintHelper">
-              每次点击只生成“一步”。如需更细提示，请使用 L3。
             </div>
           </div>
         </section>
