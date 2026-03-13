@@ -560,6 +560,26 @@ body.demo-mode .bubble__content {
   font-weight: 900;
 }
 
+.chip--action {
+  appearance: none;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease, transform 0.08s ease;
+}
+
+.chip--action:hover {
+  background: #edf2f7;
+  color: var(--text);
+}
+
+.chip--action:active {
+  transform: translateY(1px);
+}
+
+.chip--action:focus-visible {
+  outline: 2px solid rgba(43, 108, 176, 0.35);
+  outline-offset: 1px;
+}
+
 .control-grid {
   padding: 12px;
   display: grid;

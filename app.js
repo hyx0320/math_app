@@ -937,7 +937,16 @@
     const uploadArea = $("uploadArea");
     const fileInput = $("fileInput");
     const btnChooseFile = $("btnChooseFile");
+    const btnUploadImage = $("btnUploadImage");
+    const btnVoiceInput = $("btnVoiceInput");
     if (btnChooseFile && fileInput) btnChooseFile.addEventListener("click", () => fileInput.click());
+    if (btnUploadImage && fileInput)
+      btnUploadImage.addEventListener("click", () => fileInput.click());
+    if (btnVoiceInput) {
+      btnVoiceInput.addEventListener("click", () => {
+        startVoiceInput();
+      });
+    }
     if (uploadArea && fileInput) {
       uploadArea.addEventListener("click", () => fileInput.click());
       uploadArea.addEventListener("keydown", (ev) => {
@@ -1117,6 +1126,58 @@
     } catch {
       // ignore
     }
+  }
+
+  function startVoiceInput() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      toast("当前浏览器不支持语音输入");
+      addLog("VOICE_UNSUPPORTED", { ua: navigator.userAgent }, false);
+      return;
+    }
+
+    let recognition;
+    try {
+      recognition = new SpeechRecognition();
+    } catch (e) {
+      toast("语音输入初始化失败");
+      addLog("VOICE_INIT_FAIL", { error: safeString(e) }, false);
+      return;
+    }
+
+    recognition.lang = "zh-CN";
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    setChip("chipOCR", "OCR：语音中");
+    toast("请开始说话…");
+    addLog("VOICE_START", { lang: recognition.lang }, true);
+
+    recognition.onresult = (event) => {
+      const text = safeString(event.results?.[0]?.[0]?.transcript).trim();
+      if (!text) return;
+
+      const ta = $("ocrText");
+      const current = safeString(ta?.value).trim();
+      const merged = current ? `${current}\n${text}` : text;
+      setOcrText(merged, { from: "manual" });
+      toast("语音已转文字");
+      addLog("VOICE_SUCCESS", { text_length: text.length }, true);
+    };
+
+    recognition.onerror = (event) => {
+      toast("语音识别失败");
+      const hasText = safeString($("ocrText")?.value).trim().length > 0;
+      setChip("chipOCR", hasText ? "OCR：成功" : "OCR：—");
+      addLog("VOICE_FAIL", { error: safeString(event.error) }, false);
+    };
+
+    recognition.onend = () => {
+      const hasText = safeString($("ocrText")?.value).trim().length > 0;
+      setChip("chipOCR", hasText ? "OCR：成功" : "OCR：—");
+    };
+
+    recognition.start();
   }
 
   // 启动
