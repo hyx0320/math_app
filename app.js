@@ -111,7 +111,7 @@
     }, duration);
   }
 
-  /** @type {{users:any[], problems:any[], currentUser:any|null, currentProblem:any|null, stepIndex:number, sessionActive:boolean, logs:any[], ggb:any, chart:any}} */
+  /** @type {{users:any[], problems:any[], currentUser:any|null, currentProblem:any|null, stepIndex:number, sessionActive:boolean, logs:any[], ggb:any, chart:any, initialDrawingApplied:boolean}} */
   const state = {
     users: [],
     problems: [],
@@ -120,6 +120,7 @@
     stepIndex: 0,
     sessionActive: false,
     logs: [],
+    initialDrawingApplied: false,
     ggb: {
       available: false,
       ready: false,
@@ -672,8 +673,18 @@
     }
     state.sessionActive = true;
     state.stepIndex = 0;
+    state.initialDrawingApplied = false;
     clearChatAndWhiteboard();
     resetDrawing();
+
+    const initialCommands = Array.isArray(state.currentProblem?.steps?.[0]?.drawing_commands)
+      ? state.currentProblem.steps[0].drawing_commands
+      : [];
+    if (initialCommands.length > 0) {
+      applyDrawingCommands(initialCommands);
+      state.initialDrawingApplied = true;
+    }
+
     updateStepper();
 
     appendChat(
@@ -725,7 +736,12 @@
 
     const wbLine = stepObj?.whiteboard?.[variant] || stepObj?.whiteboard?.basic || "";
     const citations = Array.isArray(stepObj?.citations) ? stepObj.citations : [];
-    const commands = Array.isArray(stepObj?.drawing_commands) ? stepObj.drawing_commands : [];
+    const commands =
+      state.stepIndex === 0 && state.initialDrawingApplied
+        ? []
+        : Array.isArray(stepObj?.drawing_commands)
+          ? stepObj.drawing_commands
+          : [];
 
     // 1) 对话
     appendChat("system", hint, {
