@@ -326,7 +326,9 @@ body.demo-mode {
 }
 
 .card--chat {
-  flex: 1;
+  flex: 0 0 460px;
+  height: 460px;
+  overflow: hidden;
 }
 
 .card--ggb {
@@ -438,6 +440,13 @@ body.demo-mode {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+@media (max-height: 860px) {
+  .card--chat {
+    flex-basis: 400px;
+    height: 400px;
+  }
 }
 
 .chat::-webkit-scrollbar,
@@ -659,6 +668,10 @@ body.demo-mode .bubble__content {
   overflow: hidden;
   background: #0b1220;
   color: #e2e8f0;
+  height:360px;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .commands__header {
@@ -675,7 +688,8 @@ body.demo-mode .bubble__content {
   margin: 0;
   padding: 12px;
   overflow: auto;
-  max-height: 160px;
+  flex: 1;
+  min-height: 0;
 }
 
 .whiteboard {
