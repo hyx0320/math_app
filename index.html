@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>数竞智脑 · Web Demo</title>
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- Optional: KaTeX (公式渲染)。离线环境下会自动降级为纯文本。 -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
+    />
+  </head>
+  <body>
+    <div class="app" id="app">
+      <header class="topbar">
+        <div class="brand" title="数竞智脑 · 认知诊断驱动的数学竞赛智能体">
+          <div class="brand__logo" aria-hidden="true">数</div>
+          <div class="brand__text">
+            <div class="brand__name">数竞智脑</div>
+            <div class="brand__subtitle">分步提示 · 个性化诊断 · 动态画图（Demo）</div>
+          </div>
+        </div>
+
+        <div class="topbar__center">
+          <div class="problem-title" id="problemTitle">—</div>
+          <div class="problem-meta" id="problemMeta">—</div>
+        </div>
+
+        <div class="topbar__actions">
+          <label class="field field--select">
+            <span class="field__label">用户</span>
+            <select id="userSelect" aria-label="选择用户"></select>
+          </label>
+
+          <button class="btn btn--ghost" id="btnProblemLibrary" type="button">
+            演示题库
+          </button>
+          <button class="btn btn--ghost" id="btnNewProblem" type="button">新题录入</button>
+
+          <label class="switch" title="投屏演示建议开启">
+            <input type="checkbox" id="toggleDemoMode" />
+            <span class="switch__slider" aria-hidden="true"></span>
+            <span class="switch__label">演示模式</span>
+          </label>
+
+          <label class="switch" title="仅用于对比展示：通用大模型直出答案">
+            <input type="checkbox" id="toggleCompareMode" />
+            <span class="switch__slider" aria-hidden="true"></span>
+            <span class="switch__label">对比模式</span>
+          </label>
+
+          <button class="btn btn--primary" id="btnOpenLogs" type="button">
+            日志
+          </button>
+        </div>
+      </header>
+
+      <main class="layout">
+        <!-- Left Panel -->
+        <section class="panel panel--left" aria-label="交互区">
+          <div class="card card--problem">
+            <div class="card__header">
+              <div class="card__title">题目输入 & OCR</div>
+              <div class="card__actions">
+                <button class="btn btn--small btn--ghost" id="btnMockOCR" type="button">
+                  Mock OCR
+                </button>
+              </div>
+            </div>
+
+            <div class="upload" id="uploadArea" role="button" tabindex="0">
+              <input type="file" id="fileInput" accept="image/*" hidden />
+              <div class="upload__content">
+                <div class="upload__icon" aria-hidden="true">▣</div>
+                <div class="upload__text">
+                  <div class="upload__headline">拖拽题目截图到这里</div>
+                  <div class="upload__sub">
+                    或
+                    <button class="link" id="btnChooseFile" type="button">点击上传</button>
+                  </div>
+                </div>
+              </div>
+              <img class="upload__preview" id="uploadPreview" alt="题目预览" />
+            </div>
+
+            <textarea
+              class="textarea"
+              id="ocrText"
+              rows="6"
+              placeholder="OCR 识别结果将在此处显示（可编辑）。"
+            ></textarea>
+
+            <div class="row row--between">
+              <div class="statusline" id="ocrStatus">OCR：未开始</div>
+              <button class="btn btn--primary" id="btnStartTutoring" type="button" disabled>
+                开始辅导
+              </button>
+            </div>
+          </div>
+
+          <div class="card card--chat">
+            <div class="card__header">
+              <div class="card__title">启发式对话（分步输出）</div>
+              <div class="card__actions">
+                <button class="btn btn--small btn--ghost" id="btnClearChat" type="button">
+                  清空
+                </button>
+              </div>
+            </div>
+            <div class="chat" id="chat" aria-label="对话区"></div>
+
+            <div class="attempt" aria-label="纠错输入区">
+              <textarea
+                class="textarea textarea--compact"
+                id="attemptText"
+                rows="2"
+                placeholder="我的尝试/我算到这一步（用于纠错演示）…"
+              ></textarea>
+              <button class="btn btn--primary" id="btnSubmitAttempt" type="button">
+                提交我的思路
+              </button>
+            </div>
+
+            <div class="tool-status" id="toolStatus" aria-label="工具状态条">
+              <span class="chip" id="chipOCR">OCR：—</span>
+              <span class="chip" id="chipRAG">检索：—</span>
+              <span class="chip" id="chipDraw">画图：—</span>
+              <span class="chip" id="chipProfile">画像：—</span>
+            </div>
+          </div>
+
+          <div class="card card--controls">
+            <div class="card__header">
+              <div class="card__title">提示控制台（禁止直出）</div>
+              <div class="card__actions">
+                <div class="stepper" id="stepper">Step 0/0</div>
+              </div>
+            </div>
+
+            <div class="control-grid" aria-label="提示按钮">
+              <button class="btn btn--primary" id="btnHintL0" type="button">获取思路提示 (L0)</button>
+              <button class="btn" id="btnHintL1" type="button">查看相关定理 (L1)</button>
+              <button class="btn" id="btnHintL2" type="button">下一步计算 (L2)</button>
+              <button class="btn" id="btnHintL3" type="button">更细一点 (L3)</button>
+              <button class="btn btn--ghost" id="btnStuck" type="button">我卡住了</button>
+            </div>
+
+            <div class="helper" id="hintHelper">
+              每次点击只生成“一步”。如需更细提示，请使用 L3 或“我卡住了”。
+            </div>
+          </div>
+        </section>
+
+        <!-- Center Panel -->
+        <section class="panel panel--center" aria-label="黑板区">
+          <div class="card card--ggb">
+            <div class="card__header">
+              <div class="card__title">动态画板（GeoGebra）</div>
+              <div class="card__actions">
+                <button class="btn btn--small btn--ghost" id="btnResetDrawing" type="button">重置</button>
+                <button class="btn btn--small btn--ghost" id="btnShowCommands" type="button">命令</button>
+              </div>
+            </div>
+
+            <div class="ggb-wrap">
+              <div id="ggb-container" class="ggb-container">
+                <div
+                  id="ggbAppletTarget"
+                  class="ggb-applet-target"
+                  aria-label="GeoGebra 容器"
+                ></div>
+
+                <div class="placeholder" id="ggbPlaceholder">
+                  <div class="placeholder__title">GeoGebra 正在加载…</div>
+                  <div class="placeholder__desc">
+                    若离线或 CDN 不可用，将自动降级为“命令列表演示”。
+                  </div>
+                </div>
+              </div>
+
+              <div class="commands" id="commandsPanel" hidden>
+                <div class="commands__header">
+                  <div>本题画图命令（演示用）</div>
+                  <button class="btn btn--small" id="btnCopyCommands" type="button">复制命令</button>
+                </div>
+                <pre class="commands__body" id="commandsBody"></pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="card card--whiteboard">
+            <div class="card__header">
+              <div class="card__title">分步解题白板</div>
+              <div class="card__actions">
+                <button class="btn btn--small btn--ghost" id="btnCopyWhiteboard" type="button">复制</button>
+              </div>
+            </div>
+            <div class="whiteboard" id="whiteboard" aria-label="白板区"></div>
+
+            <div class="compare" id="comparePanel" hidden>
+              <div class="compare__header">
+                <div class="compare__title">对比：通用大模型“直出答案”（仅用于对比展示）</div>
+                <div class="compare__hint">注意：本系统主输出仍为分步提示。</div>
+              </div>
+              <div class="compare__body" id="compareBody"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Right Panel -->
+        <section class="panel panel--right" aria-label="诊断区">
+          <div class="card card--profile">
+            <div class="card__header">
+              <div class="card__title">用户画像</div>
+              <div class="card__actions"><span class="badge" id="profileLevelBadge">—</span></div>
+            </div>
+            <div class="profile" id="profileCard"></div>
+          </div>
+
+          <div class="card card--radar">
+            <div class="card__header">
+              <div class="card__title">能力雷达图（动态）</div>
+              <div class="card__actions"><span class="delta" id="radarDelta" hidden></span></div>
+            </div>
+            <div class="radar-wrap" id="radarWrap">
+              <canvas id="radar" width="360" height="240"></canvas>
+              <div class="radar-fallback" id="radarFallback" hidden></div>
+            </div>
+          </div>
+
+          <div class="card card--tags">
+            <div class="card__header">
+              <div class="card__title">诊断标签</div>
+            </div>
+            <div class="tags" id="tags"></div>
+          </div>
+
+          <div class="card card--history">
+            <div class="card__header">
+              <div class="card__title">历史薄弱点追踪</div>
+            </div>
+            <div class="history" id="history"></div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Drawer -->
+    <div class="drawer-overlay" id="drawerOverlay" hidden></div>
+    <aside class="drawer" id="drawer" aria-hidden="true">
+      <div class="drawer__header">
+        <div class="drawer__title">工具调用日志（证据链）</div>
+        <button class="btn btn--small" id="btnCloseLogs" type="button">关闭</button>
+      </div>
+      <div class="drawer__body">
+        <div class="drawer__meta" id="drawerMeta"></div>
+        <div class="logs" id="logs"></div>
+      </div>
+    </aside>
+
+    <!-- Modal overlay (shared) -->
+    <div class="modal-overlay" id="modalOverlay" hidden></div>
+
+    <!-- Modal: Problem Library -->
+    <div class="modal" id="modalLibrary" hidden>
+      <div class="modal__header">
+        <div class="modal__title">演示题库（节奏可控）</div>
+        <button class="btn btn--small" id="btnCloseLibrary" type="button">关闭</button>
+      </div>
+      <div class="modal__body">
+        <input class="input" id="problemSearch" placeholder="搜索题目（标题/标签）…" />
+        <div class="problem-list" id="problemList"></div>
+      </div>
+    </div>
+
+    <!-- Modal: New Problem -->
+    <div class="modal" id="modalNewProblem" hidden>
+      <div class="modal__header">
+        <div class="modal__title">新题录入（Demo 简化版）</div>
+        <button class="btn btn--small" id="btnCloseNewProblem" type="button">关闭</button>
+      </div>
+      <div class="modal__body">
+        <div class="helper">
+          提示：Demo 期建议优先使用“演示题库”。新题录入用于展示“多模态输入 + OCR”的交互路径。
+        </div>
+        <button class="btn btn--primary" id="btnFocusUpload" type="button">去上传区域</button>
+      </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast" hidden></div>
+
+    <!-- External libs (optional, CDN) -->
+    <script defer src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script defer src="https://www.geogebra.org/apps/deployggb.js"></script>
+
+    <!-- App -->
+    <script defer src="app.js"></script>
+  </body>
+</html>

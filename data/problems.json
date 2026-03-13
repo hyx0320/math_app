@@ -1,0 +1,267 @@
+[
+  {
+    "problem_id": "GEO-001",
+    "title": "四点共圆：同弦圆周角（演示题）",
+    "difficulty": "中等",
+    "topics": ["平面几何", "圆", "四点共圆"],
+    "ocr_text": "在△ABC中，点D在BC上，且∠ABD = ∠ACD。证明：A、B、C、D四点共圆。",
+    "compare_answer_lines": [
+      "【直出答案（对比展示）】",
+      "作过 A、B、D 的圆 ω。",
+      "在圆 ω 上，弦 AD 所对的圆周角在点 B 处为 ∠ABD。",
+      "题设给出 ∠ABD = ∠ACD，说明点 C 看到弦 AD 的圆周角与点 B 相同，",
+      "因此 C 也在圆 ω 上。",
+      "故 A、B、C、D 四点共圆。"
+    ],
+    "steps": [
+      {
+        "whiteboard": {
+          "basic": "（1）目标：证 A,B,C,D 共圆；当题给‘两角相等’，优先想同弦圆周角判定。",
+          "advanced": "（1）判定：若 ∠ABD = ∠ACD，则同弦 AD 的圆周角相等 ⇒ A,B,C,D 共圆。"
+        },
+        "citations": [{"title": "平面几何小蓝本", "source": "book", "page": 42, "url": ""}],
+        "drawing_commands": [
+          "A=(0,3)",
+          "B=(-3,0)",
+          "C=(3,0)",
+          "Polygon(A,B,C)",
+          "D=(0,0)"
+        ],
+        "hints": {
+          "basic": {
+            "L0": "你能回忆一下：证明四点共圆常用哪些判定？当题目给出‘两个角相等’时，最常对应哪条弦？",
+            "L1": "定理提示：同弦所对圆周角相等；其**逆命题**也常用——若两角相等且对应同一条弦，则四点共圆。",
+            "L2": "关键一步：先作过 A、B、D 的圆 ω。若能说明 C 也落在 ω 上，即完成共圆证明。",
+            "L3": "更细：作圆 ω 过 A,B,D。因为 ∠ABD=∠ACD，说明点 C 看到弦 AD 的圆周角与点 B 相同 ⇒ C∈ω。"
+          },
+          "advanced": {
+            "L0": "识别：两角相等 → 多半是同弦圆周角的逆命题。",
+            "L1": "一行：由 ∠ABD = ∠ACD，得 A,B,C,D 共圆（同弦 AD）。",
+            "L2": "严谨写法：作 ω=CircleThrough(A,B,D)。因弦 AD 所对圆周角在 B 处为 ∠ABD，且 ∠ACD 与之相等 ⇒ C∈ω。",
+            "L3": "可补充：同弦 AD 的圆周角在圆上处处相等；反过来，若两点看到 AD 的角相等，则四点共圆。"
+          }
+        }
+      },
+      {
+        "whiteboard": {
+          "basic": "（2）作圆：作过 A,B,D 的圆 ω（先把‘圆’构造出来）。",
+          "advanced": "（2）构造：作 ω=CircleThrough(A,B,D)。"
+        },
+        "citations": [{"title": "竞赛几何常用构造", "source": "note", "page": 3, "url": ""}],
+        "drawing_commands": ["ω=CircleThrough(A,B,D)", "α=Angle(A,B,D)", "β=Angle(A,C,D)"],
+        "hints": {
+          "basic": {
+            "L0": "现在我们有了圆 ω（过 A,B,D）。接下来只需要把点 C ‘放进’这个圆里。",
+            "L1": "思路：证明 C 在 ω 上，常用‘圆周角/同弦’或‘幂’。本题最顺的是圆周角。",
+            "L2": "观察：在 ω 上，弦 AD 对应的圆周角在点 B 处就是 ∠ABD。",
+            "L3": "更细：你可以写：‘在圆 ω 中，∠ABD 为弦 AD 所对圆周角’。下一步用题设把 ∠ACD 也和它联系起来。"
+          },
+          "advanced": {
+            "L0": "目标转化：证 C∈ω。",
+            "L1": "在 ω 上，弦 AD 对应圆周角为 ∠ABD。",
+            "L2": "题设 ∠ACD=∠ABD ⇒ C 也看到弦 AD 的同角 ⇒ C∈ω。",
+            "L3": "一句话收束：同弦 AD 的圆周角相等（及其逆）完成。"
+          }
+        }
+      },
+      {
+        "whiteboard": {
+          "basic": "（3）利用题设 ∠ABD = ∠ACD，把 C 也关联到弦 AD。",
+          "advanced": "（3）由 ∠ABD = ∠ACD 得 C∈ω。"
+        },
+        "citations": [{"title": "圆周角定理（逆）", "source": "book", "page": 42, "url": ""}],
+        "drawing_commands": [],
+        "hints": {
+          "basic": {
+            "L0": "题目直接给了两个角相等。你能说清楚它们分别在‘看’哪条弦吗？",
+            "L1": "当两角分别是 ∠ABD 与 ∠ACD 时，它们都与线段 AD 相关：都是‘看’弦 AD 的角。",
+            "L2": "因此：如果 ∠ACD 与 ∠ABD 相等，就等价于‘点 C 在圆 ω 上’（因为 ω 已由 A,B,D 定义）。",
+            "L3": "写法模板：‘在圆 ω 中，若点 X 满足 ∠AXD = ∠ABD，则 X∈ω。由题设取 X=C，得 C∈ω。’"
+          },
+          "advanced": {
+            "L0": "直接点名逆命题即可。",
+            "L1": "∠ABD=∠ACD ⇒ C 与 B 对弦 AD 的圆周角相等 ⇒ 共圆。",
+            "L2": "完成：C∈ω ⇒ A,B,C,D 共圆。",
+            "L3": "若想更规范：补一句‘ω 为过 A,B,D 的唯一圆’即可。"
+          }
+        }
+      },
+      {
+        "whiteboard": {
+          "basic": "（4）结论：C∈ω，所以 A,B,C,D 共圆。",
+          "advanced": "（4）结论：A,B,C,D 共圆。"
+        },
+        "citations": [],
+        "drawing_commands": [],
+        "hints": {
+          "basic": {
+            "L0": "最后把逻辑链写完整：作圆 → 证 C 在圆上 → 得四点共圆。",
+            "L1": "复盘：题设给角相等，天然适配‘同弦圆周角’判定。",
+            "L2": "如果评委追问：你可以解释‘为什么作过 A,B,D 的圆是合法且唯一的’。",
+            "L3": "一句总结：‘作 ω 过 A,B,D。由 ∠ABD=∠ACD 得 C∈ω，故 A,B,C,D 共圆。’"
+          },
+          "advanced": {
+            "L0": "完成。",
+            "L1": "可补一句：本题本质是同弦圆周角逆命题。",
+            "L2": "—",
+            "L3": "—"
+          }
+        }
+      }
+    ]
+  },
+
+  {
+    "problem_id": "ALG-001",
+    "title": "代数：ab+bc+ca 上界（演示题）",
+    "difficulty": "基础",
+    "topics": ["代数", "不等式", "恒等变形"],
+    "ocr_text": "已知 a,b,c>0 且 a+b+c=1，证明：ab+bc+ca \u2264 1/3。",
+    "compare_answer_lines": [
+      "【直出答案（对比展示）】",
+      "由 (a+b+c)^2 \u2265 3(ab+bc+ca)，",
+      "代入 a+b+c=1 得 1 \u2265 3(ab+bc+ca)，",
+      "故 ab+bc+ca \u2264 1/3。"
+    ],
+    "steps": [
+      {
+        "whiteboard": {
+          "basic": "（1）识别：目标是 ab+bc+ca 的上界，常用 (a+b+c)^2 展开。",
+          "advanced": "（1）套路：用 (a+b+c)^2 \u2265 3\\sum ab。"
+        },
+        "citations": [{"title": "基础不等式：C-S / 均值不等式", "source": "note", "page": 1, "url": ""}],
+        "drawing_commands": [],
+        "hints": {
+          "basic": {
+            "L0": "这里出现 a+b+c=1 和 \u2211ab，你会想到把 (a+b+c)^2 展开吗？",
+            "L1": "定理提示：由柯西或均值不等式可得 (a+b+c)^2 \u2265 3(ab+bc+ca)。",
+            "L2": "下一步：把条件 a+b+c=1 代入这个不等式。",
+            "L3": "更细：先写 1=(a+b+c)^2，再写 1 \u2265 3(ab+bc+ca)，最后两边同除以 3。"
+          },
+          "advanced": {
+            "L0": "直接上 C-S。",
+            "L1": "(a+b+c)^2 \u2265 3(ab+bc+ca)。",
+            "L2": "代入 1 \u2265 3\\sum ab \\Rightarrow \\sum ab \u2264 1/3。",
+            "L3": "—"
+          }
+        }
+      },
+      {
+        "whiteboard": {
+          "basic": "（2）写出 (a+b+c)^2 \u2265 3(ab+bc+ca)。",
+          "advanced": "（2）由 C-S： (a+b+c)^2 \u2265 3\\sum ab。"
+        },
+        "citations": [],
+        "drawing_commands": [],
+        "hints": {
+          "basic": {
+            "L0": "把不等式写出来就成功一半了。",
+            "L1": "可写作： (a-b)^2+(b-c)^2+(c-a)^2 \u2265 0 等价于 (a+b+c)^2 \u2265 3\\sum ab。",
+            "L2": "接下来代入 a+b+c=1。",
+            "L3": "注意展示‘推导链条’，避免只写结论：从平方和非负出发更稳。"
+          },
+          "advanced": {
+            "L0": "写完立即代入。",
+            "L1": "—",
+            "L2": "—",
+            "L3": "—"
+          }
+        }
+      },
+      {
+        "whiteboard": {
+          "basic": "（3）代入 a+b+c=1 得 1 \u2265 3(ab+bc+ca)。",
+          "advanced": "（3）代入条件。"
+        },
+        "citations": [],
+        "drawing_commands": [],
+        "hints": {
+          "basic": {
+            "L0": "代入条件后，左边会变成一个常数。",
+            "L1": "此时只剩一步变形：两边除以 3。",
+            "L2": "写出：ab+bc+ca \u2264 1/3。",
+            "L3": "—"
+          },
+          "advanced": {
+            "L0": "—",
+            "L1": "—",
+            "L2": "—",
+            "L3": "—"
+          }
+        }
+      }
+    ]
+  },
+
+  {
+    "problem_id": "GEO-002",
+    "title": "四点共圆：对角互补（直角）演示题",
+    "difficulty": "基础",
+    "topics": ["平面几何", "四点共圆", "对角互补"],
+    "ocr_text": "已知 AB \u27c2 AC，且 DB \u27c2 DC。证明：A、B、C、D 四点共圆。",
+    "compare_answer_lines": [
+      "【直出答案（对比展示）】",
+      "由 AB \u27c2 AC 得 \u2220BAC=90\u00b0。由 DB \u27c2 DC 得 \u2220BDC=90\u00b0。",
+      "因此 \u2220BAC+\u2220BDC=180\u00b0，四边形 ABCD 一对对角互补，故 A、B、C、D 共圆。"
+    ],
+    "steps": [
+      {
+        "whiteboard": {
+          "basic": "（1）先把信息翻译成角：AB ⟂ AC ⇒ ∠BAC=90°；DB ⟂ DC ⇒ ∠BDC=90°。",
+          "advanced": "（1）两直角：∠BAC=∠BDC=90°。"
+        },
+        "citations": [{"title": "共圆判定：对角互补", "source": "book", "page": 40, "url": ""}],
+        "drawing_commands": [
+          "B=(-3,0)",
+          "C=(3,0)",
+          "O=Midpoint(B,C)",
+          "r=Distance(B,C)/2",
+          "ω=Circle(O,r)",
+          "A=Point(ω)",
+          "D=Point(ω)",
+          "Segment(B,C)",
+          "Segment(A,B)",
+          "Segment(A,C)",
+          "Segment(D,B)",
+          "Segment(D,C)"
+        ],
+        "hints": {
+          "basic": {
+            "L0": "当你看到两个‘垂直’时，能把它们转成‘直角’吗？",
+            "L1": "判定提示：若四边形一对对角互补（和为 180°），则四点共圆。",
+            "L2": "这里 ∠BAC 和 ∠BDC 都是 90°，所以它们的和是 180°。",
+            "L3": "更细：写出：∠BAC=90°，∠BDC=90° ⇒ ∠BAC+∠BDC=180° ⇒ A,B,C,D 共圆。"
+          },
+          "advanced": {
+            "L0": "直角+直角 → 对角互补。",
+            "L1": "用判定：∠BAC+∠BDC=180°。",
+            "L2": "因此 ABCD 共圆。",
+            "L3": "若评委追问，也可说：这等价于‘以 BC 为直径的圆’。"
+          }
+        }
+      },
+      {
+        "whiteboard": {
+          "basic": "（2）用对角互补判定：∠BAC+∠BDC=180° ⇒ 共圆。",
+          "advanced": "（2）判定完成。"
+        },
+        "citations": [],
+        "drawing_commands": [],
+        "hints": {
+          "basic": {
+            "L0": "把‘两个直角’写成‘互补’，就结束了。",
+            "L1": "也可以补充一句几何直观：A、D 都在以 BC 为直径的圆上。",
+            "L2": "—",
+            "L3": "—"
+          },
+          "advanced": {
+            "L0": "—",
+            "L1": "—",
+            "L2": "—",
+            "L3": "—"
+          }
+        }
+      }
+    ]
+  }
+]
