@@ -184,6 +184,7 @@
             <div class="chat" id="chat" aria-label="对话区"></div>
 
             <div class="attempt" aria-label="纠错输入区">
+              <input type="file" id="attemptFileInput" accept="image/*" hidden />
               <textarea
                 class="textarea textarea--compact"
                 id="attemptText"
@@ -226,6 +227,17 @@
                     <span class="icon-btn__text">发送</span>
                   </button>
                 </div>
+              </div>
+              <div class="attempt__image-meta">
+                <span class="statusline" id="attemptImageStatus">对话区图片：未上传</span>
+                <button
+                  class="btn btn--small btn--ghost"
+                  id="btnRemoveAttemptImage"
+                  type="button"
+                  hidden
+                >
+                  删除图片
+                </button>
               </div>
             </div>
 

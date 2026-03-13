@@ -111,7 +111,7 @@
     }, duration);
   }
 
-  /** @type {{users:any[], problems:any[], currentUser:any|null, currentProblem:any|null, stepIndex:number, answerStepIndex:number, sessionActive:boolean, logs:any[], ggb:any, chart:any, initialDrawingApplied:boolean, uploadedImageName:string}} */
+  /** @type {{users:any[], problems:any[], currentUser:any|null, currentProblem:any|null, stepIndex:number, answerStepIndex:number, sessionActive:boolean, logs:any[], ggb:any, chart:any, initialDrawingApplied:boolean, uploadedImageName:string, attemptImageName:string}} */
   const state = {
     users: [],
     problems: [],
@@ -122,6 +122,7 @@
     sessionActive: false,
     logs: [],
     uploadedImageName: "",
+    attemptImageName: "",
     initialDrawingApplied: false,
     ggb: {
       available: false,
@@ -540,6 +541,33 @@
     setOcrText(safeString(ta?.value), { from: "manual" });
     addLog("OCR_UPLOAD_REMOVED", {}, true);
     toast("已删除上传图片");
+  }
+
+  function setAttemptImageStatus(name) {
+    const status = $("attemptImageStatus");
+    const btnRemove = $("btnRemoveAttemptImage");
+    const hasImage = safeString(name).trim().length > 0;
+    if (status) {
+      status.textContent = hasImage ? `对话区图片：已上传（${safeString(name)}）` : "对话区图片：未上传";
+    }
+    if (btnRemove) btnRemove.hidden = !hasImage;
+  }
+
+  /** @param {File} file */
+  function handleAttemptImageFile(file) {
+    state.attemptImageName = safeString(file?.name);
+    setAttemptImageStatus(state.attemptImageName);
+    addLog("ATTEMPT_IMAGE_UPLOAD", { name: file.name, size: file.size, type: file.type }, true);
+    toast("已上传对话区图片");
+  }
+
+  function removeAttemptImage() {
+    const input = $("attemptFileInput");
+    if (input) input.value = "";
+    state.attemptImageName = "";
+    setAttemptImageStatus("");
+    addLog("ATTEMPT_IMAGE_REMOVED", {}, true);
+    toast("已删除对话区图片");
   }
 
   function clearChatAndWhiteboard() {
@@ -1012,12 +1040,13 @@
 
     const uploadArea = $("uploadArea");
     const fileInput = $("fileInput");
+    const attemptFileInput = $("attemptFileInput");
     const btnChooseFile = $("btnChooseFile");
     const btnUploadImage = $("btnUploadImage");
     const btnVoiceInput = $("btnVoiceInput");
     if (btnChooseFile && fileInput) btnChooseFile.addEventListener("click", () => fileInput.click());
-    if (btnUploadImage && fileInput)
-      btnUploadImage.addEventListener("click", () => fileInput.click());
+    if (btnUploadImage && attemptFileInput)
+      btnUploadImage.addEventListener("click", () => attemptFileInput.click());
     if (btnVoiceInput) {
       btnVoiceInput.addEventListener("click", () => {
         startVoiceInput();
@@ -1039,6 +1068,13 @@
       fileInput.addEventListener("change", () => {
         const f = fileInput.files?.[0];
         if (f) handleFile(f);
+      });
+    }
+
+    if (attemptFileInput) {
+      attemptFileInput.addEventListener("change", () => {
+        const f = attemptFileInput.files?.[0];
+        if (f) handleAttemptImageFile(f);
       });
     }
 
@@ -1066,6 +1102,15 @@
         removeUploadedImage();
       });
     }
+
+    const btnRemoveAttemptImage = $("btnRemoveAttemptImage");
+    if (btnRemoveAttemptImage) {
+      btnRemoveAttemptImage.addEventListener("click", () => {
+        removeAttemptImage();
+      });
+    }
+
+    setAttemptImageStatus(state.attemptImageName);
 
     const btnStart = $("btnStartTutoring");
     if (btnStart) btnStart.addEventListener("click", () => startSession());

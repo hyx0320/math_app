@@ -605,6 +605,13 @@ body.demo-mode .bubble__content {
   gap: 10px;
 }
 
+.attempt__image-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
 .attempt__divider {
   width: 1px;
   height: 20px;
